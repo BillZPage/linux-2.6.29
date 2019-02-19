@@ -61,7 +61,7 @@ config ARCH_S3C2440
 	help
 	  Say Y here if you are using the SMDK2440.
 
-config ARCH_JZ2440
+config MACH_JZ2440
 	bool "JZ2440"
 	select CPU_S3C2440
 	select MACH_SMDK

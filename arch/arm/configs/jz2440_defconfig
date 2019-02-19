@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Linux kernel version: 2.6.29
-# Thu Feb 14 07:42:54 2019
+# Tue Feb 19 22:31:14 2019
 #
 CONFIG_ARM=y
 CONFIG_SYS_SUPPORTS_APM_EMULATION=y
@@ -235,7 +235,7 @@ CONFIG_S3C2440_DMA=y
 # CONFIG_MACH_OSIRIS is not set
 # CONFIG_MACH_RX3715 is not set
 # CONFIG_ARCH_S3C2440 is not set
-CONFIG_ARCH_JZ2440=y
+CONFIG_MACH_JZ2440=y
 # CONFIG_MACH_NEXCODER_2440 is not set
 # CONFIG_MACH_AT2440EVB is not set
 
