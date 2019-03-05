@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Linux kernel version: 2.6.29
-# Tue Feb 19 22:31:14 2019
+# Tue Mar  5 23:18:03 2019
 #
 CONFIG_ARM=y
 CONFIG_SYS_SUPPORTS_APM_EMULATION=y
@@ -266,7 +266,7 @@ CONFIG_CPU_CP15_MMU=y
 #
 # Processor Features
 #
-# CONFIG_ARM_THUMB is not set
+CONFIG_ARM_THUMB=y
 # CONFIG_CPU_ICACHE_DISABLE is not set
 # CONFIG_CPU_DCACHE_DISABLE is not set
 # CONFIG_CPU_DCACHE_WRITETHROUGH is not set
@@ -288,7 +288,8 @@ CONFIG_VMSPLIT_3G=y
 CONFIG_PAGE_OFFSET=0xC0000000
 # CONFIG_PREEMPT is not set
 CONFIG_HZ=200
-# CONFIG_AEABI is not set
+CONFIG_AEABI=y
+CONFIG_OABI_COMPAT=y
 CONFIG_ARCH_FLATMEM_HAS_HOLES=y
 # CONFIG_ARCH_SPARSEMEM_DEFAULT is not set
 # CONFIG_ARCH_SELECT_MEMORY_MODEL is not set
@@ -311,7 +312,7 @@ CONFIG_ALIGNMENT_TRAP=y
 #
 CONFIG_ZBOOT_ROM_TEXT=0x0
 CONFIG_ZBOOT_ROM_BSS=0x0
-CONFIG_CMDLINE="root=/dev/hda1 ro init=/bin/bash console=ttySAC0"
+CONFIG_CMDLINE="console=ttySAC0,115200"
 # CONFIG_XIP_KERNEL is not set
 # CONFIG_KEXEC is not set
 
@@ -339,7 +340,6 @@ CONFIG_BINFMT_ELF=y
 CONFIG_HAVE_AOUT=y
 CONFIG_BINFMT_AOUT=y
 # CONFIG_BINFMT_MISC is not set
-# CONFIG_ARTHUR is not set
 
 #
 # Power management options

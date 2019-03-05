@@ -1,9 +1,11 @@
 #!/bin/bash
 
 #prefix=arm-linux-gnueabi-
-prefix=arm-none-eabi-
+#prefix=arm-none-eabi-
+prefix=arm-none-linux-gnueabi-
 arch=arm
 config=jz2440_defconfig
+#config=s3c2410_defconfig
 
 if [ $1 == "clean" ]
 then
