@@ -192,6 +192,7 @@ static struct platform_device *jz2440_devices[] __initdata = {
 	&s3c_device_i2c0,
 	&s3c_device_iis,
 	&jz2440_device_eth,
+	&s3c_device_rtc,
 };
 
 static void __init jz2440_map_io(void)

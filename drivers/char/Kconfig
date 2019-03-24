@@ -4,6 +4,20 @@
 
 menu "Character devices"
 
+config JZ2440_ADC
+	tristate "JZ2440 adc support"
+	depends on MACH_JZ2440
+	default y if MACH_JZ2440
+	---help---
+	  Say Y here if you are using the adc(Channel 0) of JZ2440.
+
+config JZ2440_BUTTONS
+	tristate "JZ2440 buttons support"
+	depends on MACH_JZ2440
+	default y if MACH_JZ2440
+	---help---
+      Say Y here if you are using the buttons of JZ2440.
+
 config VT
 	bool "Virtual terminal" if EMBEDDED
 	depends on !S390
