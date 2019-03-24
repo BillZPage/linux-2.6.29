@@ -531,6 +531,13 @@ static void s3c2440_nand_read_buf(struct mtd_info *mtd, u_char *buf, int len)
 {
 	struct s3c2410_nand_info *info = s3c2410_nand_mtd_toinfo(mtd);
 	readsl(info->regs + S3C2440_NFDATA, buf, len / 4);
+
+	if (len & 3) {
+		buf += len & ~3;
+
+		for (; len & 3; len--)
+			*buf++ = readb(info->regs + S3C2440_NFDATA);
+	}
 }
 
 static void s3c2410_nand_write_buf(struct mtd_info *mtd, const u_char *buf, int len)
@@ -543,6 +550,13 @@ static void s3c2440_nand_write_buf(struct mtd_info *mtd, const u_char *buf, int 
 {
 	struct s3c2410_nand_info *info = s3c2410_nand_mtd_toinfo(mtd);
 	writesl(info->regs + S3C2440_NFDATA, buf, len / 4);
+
+	if (len & 3) {
+		buf += len & ~3;
+
+		for (; len & 3; len--, buf++)
+			writeb(*buf, info->regs + S3C2440_NFDATA);
+	}
 }
 
 /* cpufreq driver support */

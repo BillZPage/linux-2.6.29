@@ -23,6 +23,9 @@
 #include <linux/io.h>
 #include <linux/dm9000.h>
 
+#include <linux/mtd/nand.h>
+#include <linux/mtd/partitions.h>
+
 #include <asm/mach/arch.h>
 #include <asm/mach/map.h>
 #include <asm/mach/irq.h>
@@ -45,6 +48,7 @@
 #include <plat/devs.h>
 #include <plat/cpu.h>
 
+#include <plat/nand.h>
 #include <plat/common-smdk.h>
 
 static struct map_desc jz2440_iodesc[] __initdata = {
@@ -172,6 +176,7 @@ static struct resource jz2440_dm9k_resource[] = {
 
 static struct dm9000_plat_data jz2440_dm9k_pdata = {
 	.flags		= (DM9000_PLATF_16BITONLY | DM9000_PLATF_NO_EEPROM),
+	.dev_addr = {0x08, 0x90, 0x00, 0xA0, 0x90, 0x90},
 };
 
 static struct platform_device jz2440_device_eth = {
@@ -184,6 +189,53 @@ static struct platform_device jz2440_device_eth = {
 	},
 };
 
+static struct mtd_partition jz2440_nand_part[] = {
+	[0] = {
+		.name	= "u-boot",
+		.offset	= 0x00000000,
+		.size	= 0x00080000, /* 512KB */
+	},
+	[1] = {
+		.name	= "param",
+		.offset = 0x00080000,
+		.size	= 0x00080000, /* 512KB */
+	},
+	[2] = {
+		.name	= "kernel",
+		.offset = 0x00100000,
+		.size	= 0x00500000, /* 5MB */
+	},
+	[3] = {
+		.name	= "file-system",
+		.offset = 0x00600000,
+		.size	= 1024 * 1024 * 200, /* 200MB */
+	},
+	[4] = {
+		.name	= "nand",
+		.offset = 0x00000000,
+		.size	= 1024 * 1024 * 256, /* 256MB */
+	},
+};
+
+static struct s3c2410_nand_set jz2440_nand_sets[] = {
+	[0] = {
+		.name		= "NAND",
+		.nr_chips	= 1,
+		.nr_partitions	= ARRAY_SIZE(jz2440_nand_part),
+		.partitions	= jz2440_nand_part,
+	},
+};
+
+static struct s3c2410_platform_nand jz2440_nand_info = {
+	.tacls		= 20,
+	.twrph0		= 60,
+	.twrph1		= 20,
+	.nr_sets	= ARRAY_SIZE(jz2440_nand_sets),
+	.sets		= jz2440_nand_sets,
+	.ignore_unset_ecc = 1,
+};
+
+
 
 static struct platform_device *jz2440_devices[] __initdata = {
 	&s3c_device_usb,
@@ -193,6 +245,7 @@ static struct platform_device *jz2440_devices[] __initdata = {
 	&s3c_device_iis,
 	&jz2440_device_eth,
 	&s3c_device_rtc,
+	&s3c_device_nand,
 };
 
 static void __init jz2440_map_io(void)
@@ -200,6 +253,7 @@ static void __init jz2440_map_io(void)
 	s3c24xx_init_io(jz2440_iodesc, ARRAY_SIZE(jz2440_iodesc));
 	s3c24xx_init_clocks(12000000);
 	s3c24xx_init_uarts(jz2440_uartcfgs, ARRAY_SIZE(jz2440_uartcfgs));
+	s3c_device_nand.dev.platform_data = &jz2440_nand_info;
 }
 
 static void __init jz2440_machine_init(void)
@@ -208,7 +262,6 @@ static void __init jz2440_machine_init(void)
 	s3c_i2c0_set_platdata(NULL);
 
 	platform_add_devices(jz2440_devices, ARRAY_SIZE(jz2440_devices));
-	smdk_machine_init();
 }
 
 MACHINE_START(JZ2440, "JZ2440")
