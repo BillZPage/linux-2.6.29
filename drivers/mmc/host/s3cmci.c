@@ -672,6 +672,8 @@ static void s3cmci_dma_done_callback(struct s3c2410_dma_chan *dma_ch,
 	dbg(host, dbg_dma, "DMA FINISHED Size:%i DSTA:%08x DCNT:%08x\n",
 		size, mci_dsta, mci_dcnt);
 
+	host->dma_complete = 1;
+
 	host->complete_what = COMPLETION_FINALIZE;
 
 out:

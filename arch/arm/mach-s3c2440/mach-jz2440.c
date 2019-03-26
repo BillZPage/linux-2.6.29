@@ -25,6 +25,7 @@
 
 #include <linux/mtd/nand.h>
 #include <linux/mtd/partitions.h>
+#include <linux/mmc/host.h>
 
 #include <asm/mach/arch.h>
 #include <asm/mach/map.h>
@@ -50,6 +51,8 @@
 
 #include <plat/nand.h>
 #include <plat/common-smdk.h>
+#include <plat/mci.h>
+
 
 static struct map_desc jz2440_iodesc[] __initdata = {
 	/* ISA IO Space map (memory space selected by A24) */
@@ -235,6 +238,11 @@ static struct s3c2410_platform_nand jz2440_nand_info = {
 	.ignore_unset_ecc = 1,
 };
 
+static struct s3c24xx_mci_pdata jz2440_mmc_cfg = {
+   .gpio_detect   = S3C2410_GPG8,
+   .gpio_wprotect = S3C2410_GPH8,
+   .ocr_avail     = MMC_VDD_32_33|MMC_VDD_33_34,
+};
 
 
 static struct platform_device *jz2440_devices[] __initdata = {
@@ -246,6 +254,7 @@ static struct platform_device *jz2440_devices[] __initdata = {
 	&jz2440_device_eth,
 	&s3c_device_rtc,
 	&s3c_device_nand,
+	&s3c_device_sdi,
 };
 
 static void __init jz2440_map_io(void)
@@ -254,6 +263,7 @@ static void __init jz2440_map_io(void)
 	s3c24xx_init_clocks(12000000);
 	s3c24xx_init_uarts(jz2440_uartcfgs, ARRAY_SIZE(jz2440_uartcfgs));
 	s3c_device_nand.dev.platform_data = &jz2440_nand_info;
+	s3c_device_sdi.dev.platform_data = &jz2440_mmc_cfg;
 }
 
 static void __init jz2440_machine_init(void)

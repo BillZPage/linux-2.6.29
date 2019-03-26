@@ -400,7 +400,7 @@ static struct resource s3c_sdi_resource[] = {
 };
 
 struct platform_device s3c_device_sdi = {
-	.name		  = "s3c2410-sdi",
+	.name		  = "s3c2440-sdi",
 	.id		  = -1,
 	.num_resources	  = ARRAY_SIZE(s3c_sdi_resource),
 	.resource	  = s3c_sdi_resource,
