@@ -111,8 +111,20 @@ static struct s3c2410_uartcfg jz2440_uartcfgs[] __initdata = {
 
 /* LCD driver info */
 
-static struct s3c2410fb_display jz2440_lcd_cfg __initdata = {
+//AT043TN24
+#define LCD_WIDTH        480
+#define LCD_HEIGHT       272
+#define LCD_PIXCLOCK     100000
 
+#define LCD_RIGHT_MARGIN 1   //HFPD
+#define LCD_LEFT_MARGIN  1   //HBPD
+#define LCD_HSYNC_LEN    40  //HSPW
+
+#define LCD_UPPER_MARGIN 1   //VBPD
+#define LCD_LOWER_MARGIN 1   //VFPD
+#define LCD_VSYNC_LEN    9   //VSPW
+
+static struct s3c2410fb_display jz2440_lcd_cfg __initdata = {
 	.lcdcon5	= S3C2410_LCDCON5_FRM565 |
 			  S3C2410_LCDCON5_INVVLINE |
 			  S3C2410_LCDCON5_INVVFRAME |
@@ -120,40 +132,34 @@ static struct s3c2410fb_display jz2440_lcd_cfg __initdata = {
 			  S3C2410_LCDCON5_HWSWP,
 
 	.type		= S3C2410_LCDCON1_TFT,
-
-	.width		= 240,
-	.height		= 320,
-
-	.pixclock	= 166667, /* HCLK 60 MHz, divisor 10 */
-	.xres		= 240,
-	.yres		= 320,
+	.width		= LCD_WIDTH,
+	.height 	= LCD_HEIGHT,
+	.pixclock	= LCD_PIXCLOCK,
+	.xres		= LCD_WIDTH,
+	.yres		= LCD_HEIGHT,
 	.bpp		= 16,
-	.left_margin	= 20,
-	.right_margin	= 8,
-	.hsync_len	= 4,
-	.upper_margin	= 8,
-	.lower_margin	= 7,
-	.vsync_len	= 4,
+	.left_margin	= LCD_LEFT_MARGIN + 1,
+	.right_margin	= LCD_RIGHT_MARGIN + 1,
+	.hsync_len	= LCD_HSYNC_LEN + 1,
+	.upper_margin	= LCD_UPPER_MARGIN + 1,
+	.lower_margin	= LCD_LOWER_MARGIN + 1,
+	.vsync_len	= LCD_VSYNC_LEN + 1,
 };
 
 static struct s3c2410fb_mach_info jz2440_fb_info __initdata = {
-	.displays	= &jz2440_lcd_cfg,
-	.num_displays	= 1,
+	.displays       = &jz2440_lcd_cfg,
+	.num_displays   = 1,
 	.default_display = 0,
 
-#if 0
-	/* currently setup by downloader */
-	.gpccon		= 0xaa940659,
+	.gpccon         = 0xaaaaaaaa,
 	.gpccon_mask	= 0xffffffff,
-	.gpcup		= 0x0000ffff,
+	.gpcup          = 0xffffffff,
 	.gpcup_mask	= 0xffffffff,
-	.gpdcon		= 0xaa84aaa0,
-	.gpdcon_mask	= 0xffffffff,
-	.gpdup		= 0x0000faff,
-	.gpdup_mask	= 0xffffffff,
-#endif
 
-	.lpcsel		= ((0xCE6) & ~7) | 1<<4,
+	.gpdcon         = 0xaaaaaaaa,
+	.gpdcon_mask	= 0xffffffff,
+	.gpdup          = 0xffffffff,
+	.gpdup_mask	= 0xffffffff,
 };
 
 
@@ -243,7 +249,6 @@ static struct s3c24xx_mci_pdata jz2440_mmc_cfg = {
    .gpio_wprotect = S3C2410_GPH8,
    .ocr_avail     = MMC_VDD_32_33|MMC_VDD_33_34,
 };
-
 
 static struct platform_device *jz2440_devices[] __initdata = {
 	&s3c_device_usb,
